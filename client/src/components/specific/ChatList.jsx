@@ -1,0 +1,41 @@
+import { Stack } from "@mui/material";
+import React from "react";
+import ChatItem from "../shared/ChatItem";
+
+const ChatList = ({
+  w = "100%",
+  chats = [],
+  chatId,
+  onlineusers = [],
+  newMessagesAlert = [{ chatId: "", count: 0 }],
+  handleDeleteChat,
+}) => {
+  return (
+    <Stack width={w} direction={"column"}>
+      {chats?.map((data, idx) => {
+        // console.log(data.avatar);
+        const { avatar, _id, name, groupChat, members } = data;
+        const newMessageAlert = newMessagesAlert.find(
+          ({ chatId }) => chatId === _id
+        );
+
+        const isOnline = members?.some((member) => onlineusers.includes(_id));
+        return (
+          <ChatItem
+            key={_id + idx}
+            isOnline={isOnline}
+            avatar={avatar}
+            newMessageAlert={newMessageAlert}
+            name={name}
+            _id={_id}
+            groupChat={groupChat}
+            sameSender={chatId === _id}
+            handleDeleteChat={handleDeleteChat}
+          />
+        );
+      })}
+    </Stack>
+  );
+};
+
+export default ChatList;
